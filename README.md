@@ -84,7 +84,7 @@ Coarse timestep such as dt=1sec means several actuations are missed as generally
 The actuator latency is handled by adding a delay in the calculation of state values. The code implementation can be found in [./src/main.cpp](https://github.com/npscars/CarND-ModelPredictiveControl-T2P5/blob/master/src/main.cpp#L126) line 126 to 136.
 
 ## Video of drive along the route
-[Solution video](https://github.com/darienmt/CarND-MPC-Project-P5/blob/master/Movie_Around_Track_Autonomously.mov) can be found in the project's home folder. I like the video as it feels like car drove almost like a race driver i.e. along the [racing line](https://en.wikipedia.org/wiki/Racing_line) 
+[Solution video](https://github.com/npscars/CarND-ModelPredictiveControl-T2P5/blob/master/Movie_Around_Track_Autonomously.mov) can be found in the project's home folder. I like the video as it feels like car drove almost like a race driver i.e. along the [racing line](https://en.wikipedia.org/wiki/Racing_line) 
 
 
 
