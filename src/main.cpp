@@ -123,8 +123,8 @@ int main() {
           double cte0 = coeffs[0];
           double epsi0 = -atan(coeffs[1]);
           
-          //Apply delay of X secs
-          double delay = 100/1000.0;
+          //Apply delay in receiving the state information by X secs -- approx. half of what needs for sending as no filtering applied generally in current state values.
+          double delay = 50/1000.0;
           double Lf = 2.67;
           
           //state after delay -- same as equations of model 
@@ -149,7 +149,7 @@ int main() {
           */
           // NOTE: Remember to divide by deg2rad(25) before you send the steering value back.
           // Otherwise the values will be in between [-deg2rad(25), deg2rad(25] instead of [-1, 1].
-          double steer_value = vars[0]/deg2rad(25)*Lf;
+          double steer_value = vars[0]/deg2rad(25);
           double throttle_value = vars[1];
           json msgJson;
           msgJson["steering_angle"] = steer_value;
