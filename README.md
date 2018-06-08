@@ -73,15 +73,18 @@ for instructions and the project rubric.
 ## How to write a README
 A well written README file can enhance your project and portfolio.  Develop your abilities to create professional README files by completing [this free course](https://www.udacity.com/course/writing-readmes--ud777).
 
-## Sample Output in terminal
+## Discussion related to selection of N (timestep length) and dt (elapsed duration between timesteps)
+This project is about motion planning and not mission planning. So having a long T i.e. (N.dt) does not help. Plus having a long T will also increase calculation time. Usually we only use 1st value of planned(calculated) motion so having a huge T does not help. 
 
-Initial state values = 1.50328e-06
-          0
-          0
-1.50328e-05
-   0.744415
--0.00212934
-Vars = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
-Cost in MPC/FG eval @end = { 100000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -0.744415, -0.744415, -0.744415, -0.744415, -0.744415, -0.744415, -0.744415, -0.744415, -0.744415, 0, 0.00212934, 0.00212934, 0.00212934, 0.00212934, 0.00212934, 0.00212934, 0.00212934, 0.00212934, 0.00212934 }
-Cost 0
-42["steer",{"mpc_x":[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],"mpc_y":[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],"next_x":[0.0,2.5,5.0,7.5,10.0,12.5,15.0,17.5,20.0,22.5,25.0,27.5,30.0,32.5,35.0,37.5,40.0,42.5,45.0,47.5,50.0,52.5,55.0,57.5,60.0],"next_y":[0.744414605022361,0.758168750423974,0.788722901839136,0.835984697272289,0.899861774727874,0.980261772210333,1.07709232772411,1.19026107927364,1.31967566486337,1.46524372249773,1.62687289018118,1.80447080591815,1.99794510771309,2.20720343357043,2.43215342149461,2.67270270949009,2.92875893556129,3.20022973771267,3.48702275394866,3.7890456222737,4.10620598069224,4.43841146720871,4.78556971982757,5.14758837655324,5.52437507539017],"steering_angle":0.0,"throttle":0.0}]
+Selection of high N can cause problem during turning (especially in case of consecutive turns like after the bridge in simulation track) as the polynomial is only 3rd degree. Higher degree of polynomial could help in such case. Too low  N will give sudden turning motion. Appropriate N will ensure that the direction the car needs to move.
+
+Coarse timestep such as dt=1sec means several actuations are missed as generally 100's of msec (0.1s) is the next timestep in real world vehicles. Too fine timestep such as dt=0.05 means the control will be much finer and probably better but it is not practical in such a short time to not only calculate, give a control signal to actuator and also actuator reacting to it.
+
+## Handling of 100ms actuator Latency
+The actuator latency is handled by adding a delay in the calculation of state values. The code implementation can be found in [./src/main.cpp](https://github.com/npscars/CarND-ModelPredictiveControl-T2P5/blob/master/src/main.cpp#L126) line 126 to 136.
+
+## Video of drive along the route
+[Solution video](https://github.com/darienmt/CarND-MPC-Project-P5/blob/master/Movie_Around_Track_Autonomously.mov) can be found in the project's home folder. I like the video as it feels like car drove almost like a race driver i.e. along the [racing line](https://en.wikipedia.org/wiki/Racing_line) 
+
+
+

@@ -123,8 +123,8 @@ int main() {
           double cte0 = coeffs[0];
           double epsi0 = -atan(coeffs[1]);
           
-          //Apply delay in receiving the state information by X secs -- approx. half of what needs for sending as no filtering applied generally in current state values.
-          double delay = 50/1000.0;
+          //Apply delay in receiving the state information by X secs (100ms reference line 202 of main.cpp)
+          double delay = 100/1000.0; //in seconds
           double Lf = 2.67;
           
           //state after delay -- same as equations of model 

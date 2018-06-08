@@ -6,7 +6,7 @@
 using CppAD::AD;
 
 // TODO: Set the timestep length and duration
-size_t N = 10;
+size_t N = 10; // 10
 double dt = 0.1;
 
 // This value assumes the model presented in the classroom is used.
@@ -22,7 +22,7 @@ double dt = 0.1;
 const double Lf = 2.67;
 
 //refernce values for targets
-const double ref_v = 100;
+const double ref_v = 75;
 const double ref_cte = 0;
 const double ref_epsi = 0;
 
@@ -56,20 +56,20 @@ class FG_eval {
       
     // The part of the cost based on the reference state.
     for (int t = 0; t < N; t++) {
-      fg[0] += 1*CppAD::pow(vars[cte_start + t]-ref_cte, 2);
+      fg[0] += 1000*CppAD::pow(vars[cte_start + t]-ref_cte, 2);
       fg[0] += 100*CppAD::pow(vars[epsi_start + t]-ref_epsi, 2);
-      fg[0] += 1*CppAD::pow(vars[v_start + t] - ref_v, 2);
+      fg[0] += 1*CppAD::pow(vars[v_start + t] - ref_v, 2); // increasing this causes the speed to go too near to reference value
     }
 
     // Minimize the use of actuators.
     for (int t = 0; t < N - 1; t++) {
-      fg[0] += 25000*CppAD::pow(vars[delta_start + t], 2);
-      fg[0] += 50*CppAD::pow(vars[a_start + t], 2);
+      fg[0] += 5000*CppAD::pow(vars[delta_start + t], 2);
+      fg[0] += 1*CppAD::pow(vars[a_start + t], 2);
     }
 
     // Minimize the value gap between sequential actuations to smooth them
     for (int t = 0; t < N - 2; t++) {
-      fg[0] += 10000*CppAD::pow(vars[delta_start + t + 1] - vars[delta_start + t], 2);
+      fg[0] += 1000000*CppAD::pow(vars[delta_start + t + 1] - vars[delta_start + t], 2);
       fg[0] += 1*CppAD::pow(vars[a_start + t + 1] - vars[a_start + t], 2);
     }
     
@@ -131,7 +131,7 @@ class FG_eval {
       fg[1 + epsi_start + t] = epsi1 - ((psi0 - psides0) - v0 * delta0 / Lf * dt);
       
     }
-      std::cout << "Cost in MPC/FG eval @end = " << fg << std::endl;
+      //std::cout << "Cost in MPC/FG eval @end = " << fg << std::endl; //for debug
   }
 };
 
@@ -245,7 +245,7 @@ vector<double> MPC::Solve(Eigen::VectorXd state, Eigen::VectorXd coeffs) {
   // place to return solution
   CppAD::ipopt::solve_result<Dvector> solution;
   
-  std::cout << "Vars = " << vars <<std::endl;
+  //std::cout << "Vars = " << vars <<std::endl; //for debug
 
   // solve the problem
   CppAD::ipopt::solve<Dvector, FG_eval>(
